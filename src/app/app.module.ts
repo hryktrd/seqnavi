@@ -6,6 +6,10 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MenuModule} from 'primeng/menu';
+import {ButtonModule, InputTextModule, OrderListModule} from 'primeng/primeng';
+import {FormsModule} from '@angular/forms';
+import {MapService} from './map.service';
+import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,8 +21,14 @@ import {MenuModule} from 'primeng/menu';
     BrowserAnimationsModule,
     AppRoutingModule,
     MenuModule,
+    InputTextModule,
+    FormsModule,
+    HttpClientModule,
+    HttpClientJsonpModule,
+    ButtonModule,
+    OrderListModule
   ],
-  providers: [],
+  providers: [MapService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
