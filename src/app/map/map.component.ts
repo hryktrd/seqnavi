@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Common} from '../common';
 import {MapService} from '../map.service';
+import {SelectItem} from 'primeng/api';
 
 declare var Y;
 
@@ -11,13 +12,27 @@ declare var Y;
 })
 export class MapComponent implements AfterViewInit, OnInit {
 
+  // 地図オブジェクト
   ymap: any;
+  // クリック時マーカー情報保持
   clickMarker: any;
+  // 行き先として保持される場所一覧
   places: any[] = [];
+  // OrderListでクリックしてアクティブになっている場所
   selectedPlaces: any[] = [];
-  currentLatLng; any;
+  // クリックした緯度経度
+  currentLatLng;
+  any;
+  // YOLPから返ってきた場所情報
+  placeInfos: any[];
+  // 場所名入力候補
+  placeList: SelectItem[] = [];
 
+  // 場所名
   placeName: string;
+
+  // 地図上の直線
+  polyline: any;
 
   @ViewChild('map', {static: false}) mapElement: ElementRef;
 
@@ -47,7 +62,15 @@ export class MapComponent implements AfterViewInit, OnInit {
       this.clickMarker = new Y.Marker(new Y.LatLng(latlng.Lat, latlng.Lon));
       this.ymap.addFeature(this.clickMarker);
       this.mapService.searchPlaceInfo(latlng).subscribe((placeInfo) => {
-        this.placeName = placeInfo.ResultSet.Result[0].Name;
+        this.placeInfos = placeInfo.ResultSet.Result;
+        this.placeName = this.placeInfos[0].Name;
+        console.log(this.placeInfos);
+        this.placeInfos.forEach(place => {
+          this.placeList.push({
+            label: place.Name,
+            value: place.Name
+          });
+        });
       });
     });
   }
@@ -58,6 +81,7 @@ export class MapComponent implements AfterViewInit, OnInit {
       placeName: this.placeName,
     };
     this.places.push(item);
+    this.plotLine();
   }
 
   delPlace(e) {
@@ -69,6 +93,18 @@ export class MapComponent implements AfterViewInit, OnInit {
         }
       });
     this.places = newArray;
+    this.plotLine();
   }
 
+  plotLine() {
+    this.ymap.removeFeature(this.polyline);
+    const style = new Y.Style('ff0000', 5, 0.5);
+    var latLngs =[];
+    this.places.forEach( p => {
+      latLngs.push(new Y.LatLng(p.latLng.Lat, p.latLng.Lon));
+    });
+    console.log(latLngs);
+    this.polyline = new Y.Polyline(latLngs, {strokeStyle: style});
+    this.ymap.addFeature(this.polyline);
+  }
 }

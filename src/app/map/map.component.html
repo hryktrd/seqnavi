@@ -1,18 +1,18 @@
 <form ngForm="#form" name="form">
-  <div class="ui-fluid">
+  <div class="ui-fluid" style="min-width: 640px">
     <div class="ui-g">
-      <div class="ui-g-6">
-        <div class="map" id="map" #map></div>
+      <div class="ui-lg-6 ui-md-12">
+        <div class="map ui-lg-6 ui-md-12" id="map" #map></div>
       </div>
-      <div class="ui-g-6">
+      <div class="ui-lg-6 ui-md-12">
         <div class="ui-g-10">
-          <input pInputText name="placeName" [(ngModel)]="placeName">
+          <p-dropdown name="place_list" [options]="placeList" [(ngModel)]="placeName" [editable]="true" placeholder="地図をクリックしてください"></p-dropdown>
         </div>
         <div class="ui-g-2">
           <p-button label="追加" (onClick)="addPlace($event)"></p-button>
         </div>
         <div class="ui-g-12">
-          <p-orderList [value]="places" [(selection)]="selectedPlaces" dragdrop="true">
+          <p-orderList [value]="places" [(selection)]="selectedPlaces" (onReorder)="plotLine()" dragdrop="true">
             <ng-template let-place pTemplate="item">
               {{place.placeName}}
             </ng-template>

@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MenuModule} from 'primeng/menu';
-import {ButtonModule, InputTextModule, OrderListModule} from 'primeng/primeng';
+import {ButtonModule, DropdownModule, InputTextModule, OrderListModule} from 'primeng/primeng';
 import {FormsModule} from '@angular/forms';
 import {MapService} from './map.service';
 import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
@@ -26,7 +26,8 @@ import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
     HttpClientModule,
     HttpClientJsonpModule,
     ButtonModule,
-    OrderListModule
+    OrderListModule,
+    DropdownModule
   ],
   providers: [MapService],
   bootstrap: [AppComponent]
