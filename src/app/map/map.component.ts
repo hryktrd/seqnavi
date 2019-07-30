@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {Common} from '../common';
 import {MapService} from '../map.service';
 import {SelectItem} from 'primeng/api';
@@ -35,6 +35,10 @@ export class MapComponent implements AfterViewInit, OnInit {
   polyline: any;
 
   @ViewChild('map', {static: false}) mapElement: ElementRef;
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.ymap.updateSize();
+  }
 
   constructor(private mapService: MapService) {
   }
@@ -64,11 +68,19 @@ export class MapComponent implements AfterViewInit, OnInit {
       this.mapService.searchPlaceInfo(latlng).subscribe((placeInfo) => {
         this.placeInfos = placeInfo.ResultSet.Result;
         this.placeName = this.placeInfos[0].Name;
-        console.log(this.placeInfos);
         this.placeInfos.forEach(place => {
           this.placeList.push({
             label: place.Name,
-            value: place.Name
+            value: place.Name,
+          });
+        });
+      });
+      this.mapService.searchRakutenTravelInfo(latlng).subscribe((travelInfo) => {
+        travelInfo.hotels.forEach(hotel => {
+          console.log(hotel.hotel[0].hotelBasicInfo.hotelName);
+          this.placeList.push({
+            label: hotel.hotel[0].hotelBasicInfo.hotelName,
+            value: hotel
           });
         });
       });
