@@ -12,7 +12,7 @@
           <p-button label="追加"(onClick)="addPlace($event)"></p-button>
         </div>
         <div class="ui-g-12">
-          <p-orderList [value]="places" [(selection)]="selectedPlaces">
+          <p-orderList [value]="places" [(selection)]="selectedPlaces" dragdrop="true">
             <ng-template let-place pTemplate="item">
               {{place.placeName}}
             </ng-template>
