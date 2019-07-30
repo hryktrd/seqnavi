@@ -103,7 +103,6 @@ export class MapComponent implements AfterViewInit, OnInit {
     this.places.forEach( p => {
       latLngs.push(new Y.LatLng(p.latLng.Lat, p.latLng.Lon));
     });
-    console.log(latLngs);
     this.polyline = new Y.Polyline(latLngs, {strokeStyle: style});
     this.ymap.addFeature(this.polyline);
   }
