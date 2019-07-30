@@ -9,7 +9,7 @@
           <input pInputText name="placeName" [(ngModel)]="placeName">
         </div>
         <div class="ui-g-2">
-          <p-button label="追加"(onClick)="addPlace($event)"></p-button>
+          <p-button label="追加" (onClick)="addPlace($event)"></p-button>
         </div>
         <div class="ui-g-12">
           <p-orderList [value]="places" [(selection)]="selectedPlaces" dragdrop="true">
@@ -21,7 +21,7 @@
         <div class="ui-g-10">
         </div>
         <div class="ui-g-2">
-          <p-button label="削除"(onClick)="delPlace($event)"></p-button>
+          <p-button label="削除" (onClick)="delPlace($event)"></p-button>
         </div>
       </div>
     </div>
