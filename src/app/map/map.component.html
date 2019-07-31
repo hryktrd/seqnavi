@@ -12,9 +12,15 @@
           <p-button label="追加" (onClick)="addPlace($event)"></p-button>
         </div>
         <div class="ui-g-12">
-          <p-orderList [value]="places" [(selection)]="selectedPlaces" (onReorder)="plotLine()" dragdrop="true">
+          <p-orderList [value]="places" [(selection)]="selectedPlaces" (onReorder)="plotLine()" dragdrop="true" header="上から順に地図上に線が引かれます。">
             <ng-template let-place pTemplate="item">
-              {{place.placeName}}
+              <div class="ui-helper-clearfix" *ngIf="place.placeUrl then thenBlock else elseBlock"></div>
+                <ng-template #thenBlock>
+                  <a [href]="place.placeUrl" target="_blank">{{place.placeName}}</a>
+                </ng-template>
+                <ng-template #elseBlock>
+                  {{place.placeName}}
+                </ng-template>
             </ng-template>
           </p-orderList>
         </div>
@@ -26,4 +32,4 @@
       </div>
     </div>
   </div>
-x</form>
+</form>

@@ -29,10 +29,13 @@ export class MapComponent implements AfterViewInit, OnInit {
   placeList: SelectItem[] = [];
 
   // 場所名
-  placeName: string;
+  placeName: any;
 
   // 地図上の直線
   polyline: any;
+
+  // 場所情報URL
+  placeUrl: string;
 
   @ViewChild('map', {static: false}) mapElement: ElementRef;
   @HostListener('window:resize', ['$event'])
@@ -77,7 +80,6 @@ export class MapComponent implements AfterViewInit, OnInit {
       });
       this.mapService.searchRakutenTravelInfo(latlng).subscribe((travelInfo) => {
         travelInfo.hotels.forEach(hotel => {
-          console.log(hotel.hotel[0].hotelBasicInfo.hotelName);
           this.placeList.push({
             label: hotel.hotel[0].hotelBasicInfo.hotelName,
             value: hotel
@@ -88,9 +90,18 @@ export class MapComponent implements AfterViewInit, OnInit {
   }
 
   addPlace(e) {
+    console.log(this.currentLatLng);
+
+    if(this.placeName.hotel !== undefined){
+      this.currentLatLng.Lat = this.placeName.hotel[0].hotelBasicInfo.latitude;
+      this.currentLatLng.Lon = this.placeName.hotel[0].hotelBasicInfo.longitude;
+    }
+    console.log(this.currentLatLng);
+
     const item = {
       latLng: this.currentLatLng,
-      placeName: this.placeName,
+      placeName: this.placeName.hotel !== undefined ? this.placeName.hotel[0].hotelBasicInfo.hotelName : this.placeName,
+      placeUrl: this.placeName.hotel !== undefined  ? this.placeName.hotel[0].hotelBasicInfo.planListUrl : null,
     };
     this.places.push(item);
     this.plotLine();
