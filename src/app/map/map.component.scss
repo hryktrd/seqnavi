@@ -1,3 +1,7 @@
 .map {
   height: 640px;
 }
+
+::ng-deep p-orderList .ui-orderlist-list {
+  height: 540px;
+}
