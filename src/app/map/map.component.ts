@@ -90,13 +90,11 @@ export class MapComponent implements AfterViewInit, OnInit {
   }
 
   addPlace(e) {
-    console.log(this.currentLatLng);
 
     if(this.placeName.hotel !== undefined){
       this.currentLatLng.Lat = this.placeName.hotel[0].hotelBasicInfo.latitude;
       this.currentLatLng.Lon = this.placeName.hotel[0].hotelBasicInfo.longitude;
     }
-    console.log(this.currentLatLng);
 
     const item = {
       latLng: this.currentLatLng,
