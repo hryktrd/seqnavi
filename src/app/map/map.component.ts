@@ -98,9 +98,9 @@ export class MapComponent implements AfterViewInit, OnInit {
   }
 
   addPlace(e) {
-
+    const latlng = Object.assign({}, this.currentLatLng);
     const item = {
-      latLng: this.currentLatLng,
+      latLng: latlng,
       placeName: this.placeName,
     };
     this.places.push(item);
@@ -112,9 +112,9 @@ export class MapComponent implements AfterViewInit, OnInit {
       this.currentLatLng.Lat = this.hotelObj.hotel[0].hotelBasicInfo.latitude;
       this.currentLatLng.Lon = this.hotelObj.hotel[0].hotelBasicInfo.longitude;
     }
-
+    const latlng = Object.assign({}, this.currentLatLng);
     const item = {
-      latLng: this.currentLatLng,
+      latLng: latlng,
       placeName: this.hotelObj.hotel[0].hotelBasicInfo.hotelName,
       placeUrl: this.hotelObj.hotel[0].hotelBasicInfo.planListUrl,
     };
