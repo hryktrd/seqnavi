@@ -27,15 +27,19 @@ export class MapComponent implements AfterViewInit, OnInit {
   placeInfos: any[];
   // 場所名入力候補
   placeList: SelectItem[] = [];
+  hotelList: SelectItem[] = [];
 
   // 場所名
   placeName: any;
 
+  // 楽天のホテル情報
+  hotelObj: any;
+
   // 地図上の直線
   polyline: any;
 
-  // 場所情報URL
-  placeUrl: string;
+  // ホテル写真URL
+  hotelImageUrl: string;
 
   @ViewChild('map', {static: false}) mapElement: ElementRef;
   @HostListener('window:resize', ['$event'])
@@ -65,9 +69,7 @@ export class MapComponent implements AfterViewInit, OnInit {
     this.ymap.addControl(new Y.SearchControl);
     this.ymap.bind('click', (latlng) => {
       this.currentLatLng = latlng;
-      this.ymap.removeFeature(this.clickMarker);
-      this.clickMarker = new Y.Marker(new Y.LatLng(latlng.Lat, latlng.Lon));
-      this.ymap.addFeature(this.clickMarker);
+      this.addMark(latlng);
       this.mapService.searchPlaceInfo(latlng).subscribe((placeInfo) => {
         this.placeInfos = placeInfo.ResultSet.Result;
         this.placeName = this.placeInfos[0].Name;
@@ -80,7 +82,7 @@ export class MapComponent implements AfterViewInit, OnInit {
       });
       this.mapService.searchRakutenTravelInfo(latlng).subscribe((travelInfo) => {
         travelInfo.hotels.forEach(hotel => {
-          this.placeList.push({
+          this.hotelList.push({
             label: hotel.hotel[0].hotelBasicInfo.hotelName,
             value: hotel
           });
@@ -89,19 +91,35 @@ export class MapComponent implements AfterViewInit, OnInit {
     });
   }
 
+  addMark(latlng) {
+    this.ymap.removeFeature(this.clickMarker);
+    this.clickMarker = new Y.Marker(new Y.LatLng(latlng.Lat, latlng.Lon));
+    this.ymap.addFeature(this.clickMarker);
+  }
+
   addPlace(e) {
 
-    if(this.placeName.hotel !== undefined){
-      this.currentLatLng.Lat = this.placeName.hotel[0].hotelBasicInfo.latitude;
-      this.currentLatLng.Lon = this.placeName.hotel[0].hotelBasicInfo.longitude;
+    const item = {
+      latLng: this.currentLatLng,
+      placeName: this.placeName,
+    };
+    this.places.push(item);
+    this.plotLine();
+  }
+
+  addHotel(e) {
+    if (this.hotelObj.hotel !== undefined){
+      this.currentLatLng.Lat = this.hotelObj.hotel[0].hotelBasicInfo.latitude;
+      this.currentLatLng.Lon = this.hotelObj.hotel[0].hotelBasicInfo.longitude;
     }
 
     const item = {
       latLng: this.currentLatLng,
-      placeName: this.placeName.hotel !== undefined ? this.placeName.hotel[0].hotelBasicInfo.hotelName : this.placeName,
-      placeUrl: this.placeName.hotel !== undefined  ? this.placeName.hotel[0].hotelBasicInfo.planListUrl : null,
+      placeName: this.hotelObj.hotel[0].hotelBasicInfo.hotelName,
+      placeUrl: this.hotelObj.hotel[0].hotelBasicInfo.planListUrl,
     };
     this.places.push(item);
+    this.hotelImageUrl = '';
     this.plotLine();
   }
 
@@ -126,5 +144,14 @@ export class MapComponent implements AfterViewInit, OnInit {
     });
     this.polyline = new Y.Polyline(latLngs, {strokeStyle: style});
     this.ymap.addFeature(this.polyline);
+  }
+
+  onHotelChange(e) {
+    if (e.value.hotel !== undefined){
+      this.currentLatLng.Lat = e.value.hotel[0].hotelBasicInfo.latitude;
+      this.currentLatLng.Lon = e.value.hotel[0].hotelBasicInfo.longitude;
+      this.hotelImageUrl = e.value.hotel[0].hotelBasicInfo.hotelImageUrl;
+      this.addMark(this.currentLatLng);
+    }
   }
 }

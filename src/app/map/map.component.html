@@ -5,11 +5,20 @@
         <div class="map ui-lg-6 ui-md-12" id="map" #map></div>
       </div>
       <div class="ui-lg-6 ui-md-12">
+        <h3>地点名を指定して追加</h3>
         <div class="ui-g-10">
           <p-dropdown name="place_list" [options]="placeList" [(ngModel)]="placeName" [editable]="true" placeholder="地図をクリックしてください"></p-dropdown>
         </div>
         <div class="ui-g-2">
           <p-button label="追加" (onClick)="addPlace($event)"></p-button>
+        </div>
+        <h3>ホテルを選択して追加</h3>
+        <div class="ui-g-10">
+          <p-dropdown name="place_list" [options]="hotelList" [(ngModel)]="hotelObj" placeholder="付近のホテル" (onChange)="onHotelChange($event)"></p-dropdown>
+          <div *ngIf="hotelImageUrl"><img [src]="hotelImageUrl"></div>
+        </div>
+        <div class="ui-g-2">
+          <p-button label="追加" (onClick)="addHotel($event)"></p-button>
         </div>
         <div class="ui-g-12">
           <p-orderList [value]="places" [(selection)]="selectedPlaces" (onReorder)="plotLine()" dragdrop="true" header="上から順に地図上に線が引かれます。">
