@@ -154,4 +154,8 @@ export class MapComponent implements AfterViewInit, OnInit {
       this.addMark(this.currentLatLng);
     }
   }
+
+  orderListSelect(e) {
+    this.addMark(e.value[0].latLng);
+  }
 }

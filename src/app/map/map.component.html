@@ -21,7 +21,7 @@
           <p-button label="追加" (onClick)="addHotel($event)"></p-button>
         </div>
         <div class="ui-g-12">
-          <p-orderList [value]="places" [(selection)]="selectedPlaces" (onReorder)="plotLine()" dragdrop="true" header="上から順に地図上に線が引かれます。">
+          <p-orderList [value]="places" [(selection)]="selectedPlaces" (onReorder)="plotLine()" (onSelectionChange)=orderListSelect($event) dragdrop="true" header="上から順に地図上に線が引かれます。">
             <ng-template let-place pTemplate="item">
               <div class="ui-helper-clearfix" *ngIf="place.placeUrl then thenBlock else elseBlock"></div>
                 <ng-template #thenBlock>
