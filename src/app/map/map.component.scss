@@ -1,6 +1,12 @@
 .map {
   min-width: 395px;
-  height: 540px;
+
+  @media screen and (max-width: 1024px) {
+    height: 320px;
+  }
+  @media screen and (min-width:1025px) {
+    height: 800px;
+  }
 }
 
 ::ng-deep p-orderList .ui-orderlist-list {
