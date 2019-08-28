@@ -2,6 +2,8 @@ import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} f
 import {Common} from '../common';
 import {MapService} from '../map.service';
 import {SelectItem} from 'primeng/api';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
 
 declare var Y;
 
@@ -11,6 +13,12 @@ declare var Y;
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements AfterViewInit, OnInit {
+
+  paramMapSubscription: Subscription;
+
+  // baseUrl = 'http://localhost:4200';
+  baseUrl = 'http://seqnavi.temp-web.site';
+  currentUrl: string;
 
   // 地図オブジェクト
   ymap: any;
@@ -41,16 +49,33 @@ export class MapComponent implements AfterViewInit, OnInit {
   // ホテル写真URL
   hotelImageUrl: string;
 
+  // 共有用URL
+  shareUrl: string;
+
   @ViewChild('map', {static: false}) mapElement: ElementRef;
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.ymap.updateSize();
   }
 
-  constructor(private mapService: MapService) {
+  constructor(private mapService: MapService,
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.paramMapSubscription = this.route.paramMap.subscribe(x => {
+      if (x.get('places') && this.places.length === 0) {
+        this.places = JSON.parse(decodeURIComponent(x.get('places')));
+        this.currentUrl = this.baseUrl + this.router.url;
+      } else {
+        this.currentUrl = this.baseUrl;
+      }
+    });
+
+    this.router.events.subscribe(() => {
+      this.currentUrl = this.baseUrl + this.router.url;
+    });
 
   }
 
@@ -88,6 +113,11 @@ export class MapComponent implements AfterViewInit, OnInit {
         });
       });
     });
+
+    if (this.places.length > 0) {
+      this.plotLine();
+    }
+
   }
 
   addMark(latlng) {
@@ -156,5 +186,18 @@ export class MapComponent implements AfterViewInit, OnInit {
 
   orderListSelect(e) {
     this.addMark(e.value[0].latLng);
+  }
+
+  /**
+   * 場所一覧からシリアライズ用URL作成
+   */
+  makeUrl() {
+    this.router.navigate(['map', {
+      'places': encodeURIComponent(JSON.stringify(this.places))
+        .replace(/[!'()*]/g, c => {
+            return '%' + c.charCodeAt(0).toString(16);
+          }
+        )
+    }]);
   }
 }

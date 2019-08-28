@@ -7,6 +7,11 @@
       </div>
       <div class="ui-g-12 ui-lg-6 ui-g-nopad">
         <div class="ui-g-12">
+          <p-button label="保存" icon="pi pi-save" iconPos="left" (onClick)="makeUrl();"></p-button>
+          <label>以下のURLを保存してください</label>
+          <input type="text" name="saveUrl" [(ngModel)]="currentUrl" pInputText />
+        </div>
+        <div class="ui-g-12">
           <h3>地点名を指定して追加</h3>
         </div>
         <div class="ui-g-9 ui-md-10">
