@@ -8,9 +8,11 @@
       <div class="ui-g-12 ui-lg-6 ui-g-nopad">
         <div class="ui-g-12">
           <p-button label="保存" icon="pi pi-save" iconPos="left" (onClick)="makeUrl();"></p-button>
+          <label>以下のURLをコピーしてください</label>
           <div class="flex">
             <input type="text" name="saveUrl" [(ngModel)]="currentUrl" pInputText readonly/>
-            <p-button label="" icon="pi pi-copy" iconPos="left" (onClick)="copyUrl();"></p-button>
+            <p-button label="" icon="pi pi-copy" iconPos="left" (onClick)="copyUrl();" pTooltip="URLをコピー"></p-button>
+            <div class="line-it-button" data-lang="ja" data-type="share-a" data-ver="3" [attr.data-url]="currentUrl" data-color="default" data-size="large" data-count="false" style="display: none;"></div>
           </div>
         </div>
         <div class="ui-g-9">
