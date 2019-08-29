@@ -200,6 +200,16 @@ export class MapComponent implements AfterViewInit, OnInit {
         )
     }]);
   }
+
+  /**
+   * 保存用URLをコピー
+   */
+  copyUrl() {
+    const urlText = document.getElementsByName('saveUrl')[0] as HTMLInputElement;
+    urlText.select();
+    document.execCommand('copy');
+  }
+
   /**
    * 場所リストをリセットする
    */
