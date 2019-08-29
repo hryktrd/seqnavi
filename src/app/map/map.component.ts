@@ -104,6 +104,7 @@ export class MapComponent implements AfterViewInit, OnInit {
       this.currentLatLng = latlng;
       this.addMark(latlng);
       this.mapService.searchPlaceInfo(latlng).subscribe((placeInfo) => {
+        this.placeList = [];
         this.placeInfos = placeInfo.ResultSet.Result;
         this.placeName = this.placeInfos[0].Name;
         this.placeInfos.forEach(place => {
