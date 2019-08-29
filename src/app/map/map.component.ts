@@ -200,4 +200,10 @@ export class MapComponent implements AfterViewInit, OnInit {
         )
     }]);
   }
+  /**
+   * 場所リストをリセットする
+   */
+  clearPlaces() {
+    this.router.navigate(['/'], {});
+  }
 }
