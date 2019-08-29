@@ -86,7 +86,16 @@ export class MapComponent implements AfterViewInit, OnInit {
         scrollWheelZoom: true,
       }
     });
-    this.ymap.drawMap(new Y.LatLng(35.66572, 139.73100), 17, Y.LayerSetId.NORMAL);
+    var lat: number;
+    var lon: number;
+    if (this.places.length > 0) {
+      lat = this.places[0].latLng.Lat;
+      lon = this.places[0].latLng.Lon;
+    } else {
+      lat = 35.66572;
+      lon = 139.73100;
+    }
+    this.ymap.drawMap(new Y.LatLng(lat, lon), 17, Y.LayerSetId.NORMAL);
     this.ymap.addControl(new Y.CenterMarkControl);
     this.ymap.addControl(new Y.ScaleControl);
     this.ymap.addControl(new Y.ZoomControl);
