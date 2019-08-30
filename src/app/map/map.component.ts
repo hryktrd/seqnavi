@@ -100,6 +100,28 @@ export class MapComponent implements AfterViewInit, OnInit {
     this.ymap.addControl(new Y.ScaleControl);
     this.ymap.addControl(new Y.ZoomControl);
     this.ymap.addControl(new Y.SearchControl);
+    this.ymap.bind('moveend', (latlng) => {
+      this.currentLatLng = latlng = this.ymap.getCenter();
+      this.mapService.searchPlaceInfo(latlng).subscribe((placeInfo) => {
+        this.placeList = [];
+        this.placeInfos = placeInfo.ResultSet.Result;
+        this.placeName = this.placeInfos[0].Name;
+        this.placeInfos.forEach(place => {
+          this.placeList.push({
+            label: place.Name,
+            value: place.Name,
+          });
+        });
+      });
+      this.mapService.searchRakutenTravelInfo(latlng).subscribe((travelInfo) => {
+        travelInfo.hotels.forEach(hotel => {
+          this.hotelList.push({
+            label: hotel.hotel[0].hotelBasicInfo.hotelName,
+            value: hotel
+          });
+        });
+      });
+    });
     this.ymap.bind('click', (latlng) => {
       this.currentLatLng = latlng;
       this.addMark(latlng);
