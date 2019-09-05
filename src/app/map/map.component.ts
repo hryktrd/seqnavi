@@ -49,6 +49,9 @@ export class MapComponent implements AfterViewInit, OnInit {
   // ホテル写真URL
   hotelImageUrl: string;
 
+  // ホテルプランリストURL
+  hotelPlanUrl: string;
+
   // 共有用URL
   shareUrl: string;
 
@@ -189,6 +192,10 @@ export class MapComponent implements AfterViewInit, OnInit {
     this.plotLine();
   }
 
+  goBlank(url) {
+    window.open(url, '_blank');
+  }
+
   delPlace(e) {
     let newArray = [];
     this.places.concat(this.selectedPlaces)
@@ -217,6 +224,7 @@ export class MapComponent implements AfterViewInit, OnInit {
       this.currentLatLng.Lat = e.value.hotel[0].hotelBasicInfo.latitude;
       this.currentLatLng.Lon = e.value.hotel[0].hotelBasicInfo.longitude;
       this.hotelImageUrl = e.value.hotel[0].hotelBasicInfo.hotelImageUrl;
+      this.hotelPlanUrl = e.value.hotel[0].hotelBasicInfo.planListUrl;
       this.addMark(this.currentLatLng);
     }
   }
