@@ -4,6 +4,7 @@ import {MapService} from '../map.service';
 import {SelectItem} from 'primeng/api';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {MessageService} from 'primeng/api';
 
 declare var Y;
 
@@ -63,7 +64,8 @@ export class MapComponent implements AfterViewInit, OnInit {
 
   constructor(private mapService: MapService,
               private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private messageService: MessageService) {
   }
 
   ngOnInit() {
@@ -244,6 +246,7 @@ export class MapComponent implements AfterViewInit, OnInit {
           }
         )
     }]);
+    this.copyUrl();
   }
 
   /**
@@ -253,6 +256,7 @@ export class MapComponent implements AfterViewInit, OnInit {
     const urlText = document.getElementsByName('saveUrl')[0] as HTMLInputElement;
     urlText.select();
     document.execCommand('copy');
+    this.messageService.add({severity: 'success', summary: null, detail: 'クリップボードにコピーしました', life: 2000});
   }
 
   /**
